@@ -8,6 +8,39 @@ function addCoord (coord)  {
     publishCoords()
 }
 
+const submit = () => {
+
+    const xs = coords.map(c => c['x'])
+    const minX = Math.min(...xs)
+    const maxX = Math.max(...xs)
+    console.log(minX, maxX)
+
+    const ys = coords.map(c => c['y'])
+    const minY = Math.min(...ys)
+    const maxY = Math.max(...ys)    
+    console.log(minY, maxY)
+
+    const upload = {
+        'bbox': [minY,maxY,minX,maxX],
+        'coords': coords,
+        'image': './static/images/tide.jpg'
+    }
+
+    window.fetch('/upload', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(upload),
+    }).then(result => {
+
+        result.json()
+
+    }).then(data => {
+        // console.log((data))
+    });
+}
+
 const publishCoords = () => {
     str = ''
     coords.forEach(c => {
@@ -15,26 +48,14 @@ const publishCoords = () => {
     })
     document.getElementById('coords').innerHTML = str
 
-    window.fetch('/coords', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(coords),
-      }).then(result => {
-        
-            result.json()
-        
-      }).then(data => {
-          console.log((data))
-      });
+    
 
 
 
 }
 
 var img = new Image()
-img.src = "./static/tide.jpg";
+img.src = "./static/images/tide.jpg";
 
 img.onload = function() {
     // img.width = 200
