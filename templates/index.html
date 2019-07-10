@@ -12,6 +12,11 @@
     <div id="coords"></div>
     <button onclick="clearLastPoint()">CLEAR</button>
     <button onclick="submit()">SUBMIT</button>
+    <script>
+        var img = new Image()
+        let img_url = '{{image_url}}'
+        img.src = '{{image_url}}';
+    </script>
     <script src="{{url_for('static',filename='main.js')}}"></script>
 </body>
 </html>

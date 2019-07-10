@@ -4,6 +4,7 @@ console.log(myCanvas)
 coords = []
 
 function addCoord (coord)  {
+    
     coords.push(coord)
     publishCoords()
 }
@@ -13,19 +14,24 @@ const submit = () => {
     const xs = coords.map(c => c['x'])
     const minX = Math.min(...xs)
     const maxX = Math.max(...xs)
-    console.log(minX, maxX)
+    console.log(minX, maxX,coords)
 
     const ys = coords.map(c => c['y'])
     const minY = Math.min(...ys)
     const maxY = Math.max(...ys)    
     console.log(minY, maxY)
 
+    // extract file name from img.src
+    var url = img.src
+    var filename = url.substring(url.lastIndexOf('/')+1);
+
     const upload = {
         'bbox': [minY,maxY,minX,maxX],
         'coords': coords,
-        'image': './static/images/tide.jpg'
+        'image': './static/images/' + filename
     }
 
+    console.log(upload)
     window.fetch('/upload', {
         method: 'POST',
         headers: {
@@ -48,14 +54,10 @@ const publishCoords = () => {
     })
     document.getElementById('coords').innerHTML = str
 
-    
-
-
-
 }
 
-var img = new Image()
-img.src = "./static/images/tide.jpg";
+// var img = new Image()
+// img.src = "./static/images/tide.jpg";
 
 img.onload = function() {
     // img.width = 200
@@ -78,10 +80,20 @@ myCanvas.addEventListener('click', function(e) {
 var pointSize = 10;
 
 function getPosition(event){
-     var rect = myCanvas.getBoundingClientRect();
+     
+    var rect = myCanvas.getBoundingClientRect();
      var x = event.clientX - rect.left;
      var y = event.clientY - rect.top;
         
+     if (coords.length == 4) {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        
+        ctx.drawImage(img, 0, 0);
+        coords = []
+    }
+
+
      drawCoordinates(x,y);
      coord = {'x':x,'y':y}
      addCoord(coord);
@@ -102,8 +114,8 @@ function clearLastPoint() {
 }
 
 function drawCoordinates(x,y){	
-  	var ctx = document.getElementById("myCanvas").getContext("2d");
-
+      
+    var ctx = document.getElementById("myCanvas").getContext("2d");
 
   	ctx.fillStyle = "white"; // Red color
 
