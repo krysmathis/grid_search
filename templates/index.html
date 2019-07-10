@@ -10,8 +10,11 @@
 <body>
     <canvas id="myCanvas" style="border:2px solid black" ></canvas>
     <div id="coords"></div>
-    <button onclick="clearLastPoint()">CLEAR</button>
-    <button onclick="submit()">SUBMIT</button>
+    <div>
+        <button onclick="clearLastPoint()">CLEAR</button>
+        <button onclick="submit()">SUBMIT</button>
+    </div>
+    <img src="" id="img__results">
     <script>
         var img = new Image()
         let img_url = '{{image_url}}'
