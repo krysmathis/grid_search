@@ -40,11 +40,25 @@ const submit = () => {
         body: JSON.stringify(upload),
     }).then(result => {
 
-        result.json()
+        return result.json()
 
     }).then(data => {
+        console.log(data)
+        publishImages(data)
         document.getElementById('img__results').src = './static/images/tide_whatever.jpg'
     });
+}
+
+var publishImages = (data) => {
+    const results = document.getElementById('img__slices')
+    
+    data.forEach(d => {
+        var DOM_img = document.createElement("img");
+        DOM_img.src = d;
+    
+        results.appendChild(DOM_img);
+    })
+
 }
 
 const publishCoords = () => {
@@ -55,6 +69,25 @@ const publishCoords = () => {
     document.getElementById('coords').innerHTML = str
 
 }
+
+var openFile = function(event) {
+    var input = event.target;
+    var reader = new FileReader();
+    reader.onload = function(){
+        var dataURL = reader.result;
+       // var output = document.getElementById('mainImage');
+        img.src = dataURL;
+        
+        
+        setTimeout(function(){
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");   
+            ctx.drawImage(img, 0, 0);
+        }, 100);
+    };
+    reader.readAsDataURL(input.files[0]);
+};
+
 
 // var img = new Image()
 // img.src = "./static/images/tide.jpg";
@@ -67,8 +100,7 @@ img.onload = function() {
 
 window.onload = function() {
     var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    
+    var ctx = c.getContext("2d");   
     ctx.drawImage(img, 0, 0);
   };
 

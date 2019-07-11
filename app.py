@@ -7,6 +7,36 @@ import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
+def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation = inter)
+
+    # return the resized image
+    return resized
 
 def order_points(pts):
     
@@ -92,8 +122,35 @@ def upload():
 
 
         img_corrected = four_point_transform(img, pts)
+        img_corrected = image_resize(img_corrected,height=800)
         cv2.imwrite('./static/images/tide_whatever.jpg',img_corrected)
 
-        return Response(json.dumps(points), status=200, mimetype='application/json')
+        dict = {
+            "apple_jacks_marshmallows": ["2", "2", "181", "127"],
+            "rice_krispies": ["183", "5", "458", "127"],
+            "lucky_charms": ["462", "6", "550", "125"],
+            "apple_jacks": ["4", "151", "178", "267"],
+            "crispy_rice": ["181", "155", "356", "268"],
+            "cv_frosted_flakes": ["365", "150", "542", "266"],
+            "apple_jacks_family_size": ["2", "311", "160", "463"],
+            "peanut_butter_crunch": ["162", "341", "249", "461"],
+            "cinnamon_frosted_flakes": ["252", "343", "339", "459"],
+            "frosted_flakes": ["344", "344", "523", "460"],
+            "crunch_berries": ["4", "496", "172", "632"],
+            "capn_crunch": ["175", "501", "363", "636"],
+            "frosted_flakes_family_size": ["363", "490", "544", "631"],
+            "giant_crunch_berries": ["7", "658", "232", "796"],
+            "giant_capn_crunch": ["235", "655", "454", "796"],
+            "pops": ["459", "660", "549", "796"]
+        }
+
+        files = []
+        # cut up the image
+        for k,v in dict.items():
+            cv2.imwrite('./static/images/' + k + '.jpg',img_corrected[int(dict[k][1]):int(dict[k][3]),int(dict[k][0]):int(dict[k][2])])
+    #"apple_jacks_marshmallows": ["2", "2", "181", "127"]
+            files.append('./static/images/' + k + '.jpg')
+        return Response(json.dumps(files), status=200, mimetype='application/json')
+
 if __name__ == '__main__':
     app.run(debug=True)

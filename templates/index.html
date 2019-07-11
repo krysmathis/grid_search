@@ -8,6 +8,10 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='main.css')}}" />
 </head>
 <body>
+    <!-- <div>
+        <input type="file" accept="image/*" onchange="openFile(event)">
+    </div> -->
+        
     <canvas id="myCanvas" style="border:2px solid black" ></canvas>
     <div id="coords"></div>
     <div>
@@ -15,6 +19,7 @@
         <button onclick="submit()">SUBMIT</button>
     </div>
     <img src="" id="img__results">
+    <div id="img__slices"></div>
     <script>
         var img = new Image()
         let img_url = '{{image_url}}'
