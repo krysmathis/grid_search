@@ -1,5 +1,4 @@
 var myCanvas = document.getElementById('myCanvas');
-console.log(myCanvas)
 
 coords = []
 
@@ -20,24 +19,26 @@ const submit = () => {
     const xs = coords.map(c => c['x'])
     const minX = Math.min(...xs)
     const maxX = Math.max(...xs)
-    console.log(minX, maxX,coords)
 
     const ys = coords.map(c => c['y'])
     const minY = Math.min(...ys)
     const maxY = Math.max(...ys)    
-    console.log(minY, maxY)
+
 
     // extract file name from img.src
     var url = img.src
     var filename = url.substring(url.lastIndexOf('/')+1);
 
+    const pogEl = document.querySelector("#select__pog")
+    const pog = pogEl[pogEl.selectedIndex].text
+    
     const upload = {
         'bbox': [minY,maxY,minX,maxX],
         'coords': coords,
-        'image': './static/images/' + filename
+        'image': './static/images/' + filename,
+        'pog': pog
     }
 
-    console.log(upload)
     window.fetch('/upload', {
         method: 'POST',
         headers: {
@@ -49,7 +50,7 @@ const submit = () => {
         return result.json()
 
     }).then(data => {
-        console.log(data)
+
         publishImages(data)
         document.getElementById('img__results').src = './static/images/tide_whatever.jpg'
     });
@@ -89,7 +90,7 @@ var openFile = function(event) {
     var input = event.target;
     var reader = new FileReader();
     reader.onload = function(){
-        console.log('reader:',reader)
+
         var dataURL = reader.result;
         //console.log('dataURL', dataURL)
        // var output = document.getElementById('mainImage');
@@ -158,7 +159,7 @@ function clearLastPoint() {
     var ctx = c.getContext("2d");
     
     ctx.drawImage(img, 0, 0);
-    console.log(coords)
+
     const lastPoint = coords.pop()
     coords.forEach(c => {
         drawCoordinates(c.x,c.y)
@@ -175,3 +176,22 @@ function drawCoordinates(x,y){
     ctx.arc(x, y, pointSize, 0, Math.PI * 2, true);
     ctx.fill();
 }
+
+function populatePogSelector() {
+    fetch("./static/planograms.json")
+    .then(res => res.json())
+    .then(data => {
+
+        const pogs = data.reduce((m,v) => {
+            m.push(v['planogram'])
+            return m
+        },[])
+
+        const dataTypes = pogs
+        const inputEl = document.querySelector("#select__pog")
+            dataTypes.map((d,i) => {
+                inputEl.options[inputEl.options.length] = new Option(d,`${i}`);
+            })
+    })
+}
+populatePogSelector()

@@ -1,0 +1,42 @@
+[
+    {   "planogram": "cereal",
+        "items": {
+        "apple_jacks_marshmallows": ["2", "2", "181", "127"],
+        "rice_krispies": ["183", "5", "458", "127"],
+        "lucky_charms": ["462", "6", "550", "125"],
+        "apple_jacks": ["4", "151", "178", "267"],
+        "crispy_rice": ["181", "155", "356", "268"],
+        "cv_frosted_flakes": ["365", "150", "542", "266"],
+        "apple_jacks_family_size": ["2", "311", "160", "463"],
+        "peanut_butter_crunch": ["162", "341", "249", "461"],
+        "cinnamon_frosted_flakes": ["252", "343", "339", "459"],
+        "frosted_flakes": ["344", "344", "523", "460"],
+        "crunch_berries": ["4", "496", "172", "632"],
+        "capn_crunch": ["175", "501", "363", "636"],
+        "frosted_flakes_family_size": ["363", "490", "544", "631"],
+        "giant_crunch_berries": ["7", "658", "232", "796"],
+        "giant_capn_crunch": ["235", "655", "454", "796"],
+        "pops": ["459", "660", "549", "796"]
+        }
+    },
+    {   "planogram": "cereal2",
+        "items": {
+        "apple_jacks_marshmallows": ["2", "2", "181", "127"],
+        "rice_krispies": ["183", "5", "458", "127"],
+        "lucky_charms": ["462", "6", "550", "125"],
+        "apple_jacks": ["4", "151", "178", "267"],
+        "crispy_rice": ["181", "155", "356", "268"],
+        "cv_frosted_flakes": ["365", "150", "542", "266"],
+        "apple_jacks_family_size": ["2", "311", "160", "463"],
+        "peanut_butter_crunch": ["162", "341", "249", "461"],
+        "cinnamon_frosted_flakes": ["252", "343", "339", "459"],
+        "frosted_flakes": ["344", "344", "523", "460"],
+        "crunch_berries": ["4", "496", "172", "632"],
+        "capn_crunch": ["175", "501", "363", "636"],
+        "frosted_flakes_family_size": ["363", "490", "544", "631"],
+        "giant_crunch_berries": ["7", "658", "232", "796"],
+        "giant_capn_crunch": ["235", "655", "454", "796"],
+        "pops": ["459", "660", "549", "796"]
+        }
+    }
+]

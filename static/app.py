@@ -147,7 +147,7 @@ def upload_file():
 
 
 @app.route('/',methods=['GET','POST'])
-def image_management():
+def hello_world():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -187,21 +187,32 @@ def upload():
         bbox = points['bbox']
         
         pts = [(p['x'],p['y']) for p in points['coords']]
-        print('POG',points['pog'])
-        selected_pog = points['pog']
+        print(pts)
+
 
         img_corrected = four_point_transform(img, pts)
         img_corrected = image_resize(img_corrected,height=800)
         cv2.imwrite('./static/images/tide_whatever.jpg',img_corrected)
-        
-        json_data = open(os.path.join('./static','planograms.json'),'r')
-        planogram = json.load(json_data)
-        
-        pog = next((p for p in planogram if p['planogram'] == selected_pog), None)
-        
-        dict = pog['items']
-        
-        
+
+        dict = {
+            "apple_jacks_marshmallows": ["2", "2", "181", "127"],
+            "rice_krispies": ["183", "5", "458", "127"],
+            "lucky_charms": ["462", "6", "550", "125"],
+            "apple_jacks": ["4", "151", "178", "267"],
+            "crispy_rice": ["181", "155", "356", "268"],
+            "cv_frosted_flakes": ["365", "150", "542", "266"],
+            "apple_jacks_family_size": ["2", "311", "160", "463"],
+            "peanut_butter_crunch": ["162", "341", "249", "461"],
+            "cinnamon_frosted_flakes": ["252", "343", "339", "459"],
+            "frosted_flakes": ["344", "344", "523", "460"],
+            "crunch_berries": ["4", "496", "172", "632"],
+            "capn_crunch": ["175", "501", "363", "636"],
+            "frosted_flakes_family_size": ["363", "490", "544", "631"],
+            "giant_crunch_berries": ["7", "658", "232", "796"],
+            "giant_capn_crunch": ["235", "655", "454", "796"],
+            "pops": ["459", "660", "549", "796"]
+        }
+
         files = []
         # cut up the image
         for k,v in dict.items():
