@@ -174,6 +174,11 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
+
+@app.route('/annotate')
+def annotate():
+    return render_template('annotate.html')
+
 @app.route('/upload',methods=['POST','GET'])
 def upload():
     
