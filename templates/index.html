@@ -8,10 +8,13 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='main.css')}}" />
 </head>
 <body>
-    <!-- <div>
-        <input type="file" accept="image/*" onchange="openFile(event)">
-    </div> -->
-        
+    <!-- <form>
+        <input type="file" name='UPLOAD' accept="image/*" onchange="openFile(event)">
+    </form> -->
+    <form method=post enctype=multipart/form-data>
+        <input type=file name=file>
+        <input type=submit value=Upload onclick="openForm(event)">
+    </form>
     <canvas id="myCanvas" style="border:2px solid black" ></canvas>
     <div id="coords"></div>
     <div>

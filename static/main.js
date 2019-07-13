@@ -3,6 +3,12 @@ console.log(myCanvas)
 
 coords = []
 
+// const uploadForm = document.querySelector('.form__upload')
+// uploadForm.onsubmit = (event) => {
+//     event.preventDefault();
+//     openFile(event)
+// }
+
 function addCoord (coord)  {
     
     coords.push(coord)
@@ -50,16 +56,25 @@ const submit = () => {
 }
 
 var publishImages = (data) => {
-    const results = document.getElementById('img__slices')
-    
-    data.forEach(d => {
-        var DOM_img = document.createElement("img");
-        DOM_img.src = d;
-    
-        results.appendChild(DOM_img);
-    })
 
-}
+    const results = document.getElementById('img__slices')
+
+    data.forEach(d => {
+
+        var div = document.createElement('div')
+        var DOM_img = document.createElement("img");
+        DOM_img.src = d
+
+        var url = DOM_img.src
+        var filename = url.substring(url.lastIndexOf('/')+1);
+        DOM_img.title = filename;
+
+        div.innerHTML = '<div>' + filename + '</div>';
+        div.appendChild(DOM_img);
+        results.appendChild(div);
+
+    });
+};
 
 const publishCoords = () => {
     str = ''
@@ -74,18 +89,23 @@ var openFile = function(event) {
     var input = event.target;
     var reader = new FileReader();
     reader.onload = function(){
+        console.log('reader:',reader)
         var dataURL = reader.result;
+        //console.log('dataURL', dataURL)
        // var output = document.getElementById('mainImage');
         img.src = dataURL;
         
-        
+        canvasImg = myCanvas.toDataURL('')
         setTimeout(function(){
             var c = document.getElementById("myCanvas");
             var ctx = c.getContext("2d");   
-            ctx.drawImage(img, 0, 0);
-        }, 100);
+            ctx.drawImage(img, 0, 0)
+        }, 500);
+
+
     };
     reader.readAsDataURL(input.files[0]);
+    //console.log(input.files[0])
 };
 
 
