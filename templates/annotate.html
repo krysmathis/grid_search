@@ -104,6 +104,9 @@
 
     // prints 
     function showBoxes(){
+        var width = document.getElementById("mainImage").width; 
+        var height = document.getElementById("mainImage").height; 
+
         var myNode = document.getElementById("myList");
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
@@ -113,7 +116,8 @@
             const results = {}
             results['planogram'] = "test"
             results['items'] = images
-
+            results['width'] = width
+            results['height'] = height
             var node = document.createElement("PRE");
             var textNode = document.createTextNode(JSON.stringify(results, null, '  '));
             node.appendChild(textNode);
