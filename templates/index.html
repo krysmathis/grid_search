@@ -24,10 +24,12 @@
             <button class="btn btn-dark" onclick="submit()">SUBMIT</button>
         </div>
         <img src="" id="img__results">
+        <div id="missing-items"></div>
         <div id="img__slices"></div>
         <script>
             var img = new Image()
             let img_url = '{{image_url}}'
+            var img_bucket = '{{image_bucket}}'
             img.src = '{{image_url}}';
         </script>
         <script src="{{url_for('static',filename='main.js')}}"></script>

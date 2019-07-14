@@ -3,3 +3,7 @@
     padding-top: 20px; /* Whatever the height of your navbar is; the
                              default is 50px */
 }
+
+.outs__item {
+    color: red;
+}

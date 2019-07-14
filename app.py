@@ -7,57 +7,60 @@ import matplotlib.pyplot as plt
 import os
 import boto3, botocore
 import urllib
+from io import BytesIO
+import imageio
 
 UPLOAD_FOLDER = './static/images'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-S3_BUCKET                 = os.environ.get("S3_BUCKET_NAME")
-S3_KEY                    = os.environ.get("S3_ACCESS_KEY")
-S3_SECRET                 = os.environ.get("S3_SECRET_ACCESS_KEY")
-S3_LOCATION               = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+# S3_BUCKET                 = os.environ.get("S3_BUCKET_NAME")
+# S3_KEY                    = os.environ.get("S3_ACCESS_KEY")
+# S3_SECRET                 = os.environ.get("S3_SECRET_ACCESS_KEY")
+# S3_LOCATION               = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
 
 SECRET_KEY                = os.urandom(32)
 DEBUG                     = True
 PORT                      = 5000
 
+DEV_LOCAL                 = True
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = SECRET_KEY
 
 
-s3 = boto3.client(
-   "s3",
-   aws_access_key_id=S3_KEY,
-   aws_secret_access_key=S3_SECRET
-)
+# s3 = boto3.client(
+#    "s3",
+#    aws_access_key_id=S3_KEY,
+#    aws_secret_access_key=S3_SECRET
+# )
 
-def upload_file_to_s3(file, bucket_name, acl="public-read"):
+# def upload_file_to_s3(file, bucket_name, acl="public-read"):
     
-    """
-    Docs: http://boto3.readthedocs.io/en/latest/guide/s3.html
-    """
-    try:
+#     """
+#     Docs: http://boto3.readthedocs.io/en/latest/guide/s3.html
+#     """
+#     try:
 
-        # s3_resource = boto3.resource('s3')
-        #my_bucket = s3.Bucket(S3_BUCKET)
-        #my_bucket.Object(file.filename).put(Body=file)
+#         # s3_resource = boto3.resource('s3')
+#         #my_bucket = s3.Bucket(S3_BUCKET)
+#         #my_bucket.Object(file.filename).put(Body=file)
 
-        s3.upload_fileobj(
-            file,
-            bucket_name,
-            file.filename,
-            ExtraArgs={
-                "ACL": acl,
-                "ContentType": file.content_type
-            }
-        )
+#         s3.upload_fileobj(
+#             file,
+#             bucket_name,
+#             file.filename,
+#             ExtraArgs={
+#                 "ACL": acl,
+#                 "ContentType": file.content_type
+#             }
+#         )
 
-    except Exception as e:
-        print("Something Happened: ", e)
-        return e
+#     except Exception as e:
+#         print("Something Happened: ", e)
+#         return e
 
-    return "{}{}".format(S3_LOCATION, file.filename)
+#     return "{}{}".format(S3_LOCATION, file.filename)
 
 
 def url_to_image(url):
@@ -224,6 +227,10 @@ def image_management():
             file.filename = filename
             amazon_file = file
 
+            if DEV_LOCAL == True: # using local files saving on s3 load
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                return render_template('index.html',image_url='./static/images/'+filename, image_bucket='./static/images/')
+            
             upload_results = upload_file_to_s3(file, S3_BUCKET)
             image_url = str(upload_results)
             
@@ -232,10 +239,10 @@ def image_management():
             #                         filename=filename))
             # print('AMAZON_PART:', str(upload_file_to_s3(file, S3_BUCKET)))
             # return render_template('index.html',image_url='./static/images/'+filename)
-            return render_template('index.html',image_url=image_url)
+            return render_template('index.html',image_url=image_url,image_bucket='./static/images/')
     else:
         # return render_template('index.html',image_url='./static/images/shelf2.jpg')
-        return render_template('index.html',image_url='')
+        return render_template('index.html',image_url='',image_bucket='./static/images/')
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -254,11 +261,14 @@ def upload():
         points = request.get_json()
         print(points)
         
-    # now manipulate the image the way you want
-        url = points['image']
-        img = url_to_image(url)
-        # img = cv2.imread(points['image'])
-        # img_slice = crop_img[pts[0][0]:pts[2][0],pts[3][0]:pts[1][0]]
+        # now manipulate the image the way you want
+        
+        if DEV_LOCAL == False:
+            url = points['image']
+            img = url_to_image(url)
+        else:
+            img = cv2.imread(points['image'])
+
         bbox = points['bbox']
         
         pts = [(p['x'],p['y']) for p in points['coords']]
@@ -274,19 +284,24 @@ def upload():
         img_corrected = image_resize(img_corrected,height=pog_height)
         
         cv2.imwrite('./static/images/tide_whatever.jpg',img_corrected)
-        img_np = cv2.imencode('.jpg', img_corrected)[1]
-        cv2.imwrite('./static/images/tide_whatever2.jpg',img_np)
         
         pog_items = pog['items']
         
-        
         files = []
+
+
         # cut up the image
         for k,v in pog_items.items():
+            
             sliced_image = img_corrected[int(pog_items[k][1]):int(pog_items[k][3]),int(pog_items[k][0]):int(pog_items[k][2])]
-                 
+            
+            # calc to check if it is within darkness threshold
+            gray = cv2.cvtColor(sliced_image, cv2.COLOR_BGR2GRAY)
+            light_threshold = 10
+            is_light = 1 if np.mean(gray) > light_threshold else 0
+            
             cv2.imwrite('./static/images/' + k + '.jpg',sliced_image)
-            files.append('./static/images/' + k + '.jpg')
+            files.append({'path': './static/images/' + k + '.jpg','is_light': is_light})
         
         return Response(json.dumps(files), status=200, mimetype='application/json')
 
