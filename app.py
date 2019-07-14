@@ -5,10 +5,10 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import os
-import boto3, botocore
+# import boto3, botocore
 import urllib
-from io import BytesIO
-import imageio
+# from io import BytesIO
+# import imageio
 
 UPLOAD_FOLDER = './static/images'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
