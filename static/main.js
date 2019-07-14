@@ -8,6 +8,12 @@ coords = []
 //     openFile(event)
 // }
 
+
+// drawCoordinates(46,12)
+// drawCoordinates(546,20)
+// drawCoordinates(501,731)
+// drawCoordinates(80,718)
+
 function addCoord (coord)  {
     
     coords.push(coord)
@@ -35,7 +41,7 @@ const submit = () => {
     const upload = {
         'bbox': [minY,maxY,minX,maxX],
         'coords': coords,
-        'image': './static/images/' + filename,
+        'image': 'http://grid-search-bucket.s3.amazonaws.com/' + filename,
         'pog': pog
     }
 

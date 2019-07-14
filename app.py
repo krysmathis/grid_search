@@ -1,18 +1,74 @@
 from flask import Flask, render_template, request, url_for, redirect, Response, flash, send_from_directory
+from werkzeug.utils import secure_filename
 import json
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-from werkzeug.utils import secure_filename
 import os
+import boto3, botocore
+import urllib
 
 UPLOAD_FOLDER = './static/images'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-SECRET_KEY = os.environ.get('HURR_SECRET_KEY')
+
+S3_BUCKET                 = os.environ.get("S3_BUCKET_NAME")
+S3_KEY                    = os.environ.get("S3_ACCESS_KEY")
+S3_SECRET                 = os.environ.get("S3_SECRET_ACCESS_KEY")
+S3_LOCATION               = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
+
+SECRET_KEY                = os.urandom(32)
+DEBUG                     = True
+PORT                      = 5000
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = SECRET_KEY
+
+
+s3 = boto3.client(
+   "s3",
+   aws_access_key_id=S3_KEY,
+   aws_secret_access_key=S3_SECRET
+)
+
+def upload_file_to_s3(file, bucket_name, acl="public-read"):
+    
+    """
+    Docs: http://boto3.readthedocs.io/en/latest/guide/s3.html
+    """
+    try:
+
+        # s3_resource = boto3.resource('s3')
+        #my_bucket = s3.Bucket(S3_BUCKET)
+        #my_bucket.Object(file.filename).put(Body=file)
+
+        s3.upload_fileobj(
+            file,
+            bucket_name,
+            file.filename,
+            ExtraArgs={
+                "ACL": acl,
+                "ContentType": file.content_type
+            }
+        )
+
+    except Exception as e:
+        print("Something Happened: ", e)
+        return e
+
+    return "{}{}".format(S3_LOCATION, file.filename)
+
+
+def url_to_image(url):
+	# download the image, convert it to a NumPy array, and then read
+	# it into OpenCV format
+	resp = urllib.request.urlopen(url)
+	image = np.asarray(bytearray(resp.read()), dtype="uint8")
+	image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+ 
+	# return the image
+	return image
 
 
 def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
@@ -113,19 +169,49 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/images', methods=['POST','GET'])
-def upload_file():
+# @app.route('/images', methods=['POST','GET'])
+# def upload_file():
+    
+#     if request.method == 'POST':
+#         print('POSTING...',len(request.files))
+#         print(request.args)
+#         # check if the post request has the file part
+#         if 'file' not in request.files:
+#             print('no file part')
+#             flash('No file part')
+#             return redirect(request.url)
+#         file = request.files['file']
+#         print(file.filename)
+#         # if user does not select file, browser also
+#         # submit an empty part without filename
+#         if file.filename == '':
+#             flash('No selected file')
+#             return redirect(request.url)
+        
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             print('filename: ', filename)
+#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
+#             # redirect(request.url,code=307)
+#             # return render_template('index.html',image_url='./static/images/shelftest.jpg')
+#             return Response(json.dumps('success'), status=200, mimetype='application/json')
+            
+    
+#     return render_template('index.html',image_url='./static/images/shelf2.jpg')
+
+
+@app.route('/home',methods=['GET','POST'])
+@app.route('/',methods=['GET','POST'])
+def image_management():
     
     if request.method == 'POST':
-        print('POSTING...',len(request.files))
-        print(request.args)
         # check if the post request has the file part
         if 'file' not in request.files:
-            print('no file part')
             flash('No file part')
             return redirect(request.url)
+        
         file = request.files['file']
-        print(file.filename)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
@@ -133,41 +219,23 @@ def upload_file():
             return redirect(request.url)
         
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            print('filename: ', filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             
-            # redirect(request.url,code=307)
-            # return render_template('index.html',image_url='./static/images/shelftest.jpg')
-            return Response(json.dumps('success'), status=200, mimetype='application/json')
-            
-    
-    return render_template('index.html',image_url='./static/images/shelf2.jpg')
-
-
-@app.route('/home',methods=['GET','POST'])
-@app.route('/',methods=['GET','POST'])
-def image_management():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.filename = filename
+            amazon_file = file
+
+            upload_results = upload_file_to_s3(file, S3_BUCKET)
+            image_url = str(upload_results)
+            
+            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # return redirect(url_for('uploaded_file',
             #                         filename=filename))
-            return render_template('index.html',image_url='./static/images/'+filename)
-    
-    # return render_template('index.html',image_url='./static/images/shelf2.jpg')
-    return render_template('index.html',image_url='')
+            # print('AMAZON_PART:', str(upload_file_to_s3(file, S3_BUCKET)))
+            # return render_template('index.html',image_url='./static/images/'+filename)
+            return render_template('index.html',image_url=image_url)
+    else:
+        # return render_template('index.html',image_url='./static/images/shelf2.jpg')
+        return render_template('index.html',image_url='')
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -185,34 +253,41 @@ def upload():
     if request.method == 'POST':
         points = request.get_json()
         print(points)
-
+        
     # now manipulate the image the way you want
-        img = cv2.imread(points['image'])
+        url = points['image']
+        img = url_to_image(url)
+        # img = cv2.imread(points['image'])
         # img_slice = crop_img[pts[0][0]:pts[2][0],pts[3][0]:pts[1][0]]
         bbox = points['bbox']
         
         pts = [(p['x'],p['y']) for p in points['coords']]
         print('POG',points['pog'])
-        selected_pog = points['pog']
-
-        img_corrected = four_point_transform(img, pts)
-        img_corrected = image_resize(img_corrected,height=800)
-        cv2.imwrite('./static/images/tide_whatever.jpg',img_corrected)
         
+        selected_pog = points['pog']
         json_data = open(os.path.join('./static','planograms.json'),'r')
         planogram = json.load(json_data)
-        
         pog = next((p for p in planogram if p['planogram'] == selected_pog), None)
         
-        dict = pog['items']
+        pog_height = pog['height']
+        img_corrected = four_point_transform(img, pts)
+        img_corrected = image_resize(img_corrected,height=pog_height)
+        
+        cv2.imwrite('./static/images/tide_whatever.jpg',img_corrected)
+        img_np = cv2.imencode('.jpg', img_corrected)[1]
+        cv2.imwrite('./static/images/tide_whatever2.jpg',img_np)
+        
+        pog_items = pog['items']
         
         
         files = []
         # cut up the image
-        for k,v in dict.items():
-            cv2.imwrite('./static/images/' + k + '.jpg',img_corrected[int(dict[k][1]):int(dict[k][3]),int(dict[k][0]):int(dict[k][2])])
-    #"apple_jacks_marshmallows": ["2", "2", "181", "127"]
+        for k,v in pog_items.items():
+            sliced_image = img_corrected[int(pog_items[k][1]):int(pog_items[k][3]),int(pog_items[k][0]):int(pog_items[k][2])]
+                 
+            cv2.imwrite('./static/images/' + k + '.jpg',sliced_image)
             files.append('./static/images/' + k + '.jpg')
+        
         return Response(json.dumps(files), status=200, mimetype='application/json')
 
 if __name__ == '__main__':
