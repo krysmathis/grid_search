@@ -17,7 +17,9 @@
         "giant_crunch_berries": ["7", "658", "232", "796"],
         "giant_capn_crunch": ["235", "655", "454", "796"],
         "pops": ["459", "660", "549", "796"]
-        }
+        },
+        "height": 800,
+        "width": 560
     },
     {   "planogram": "cereal2",
         "items": {
@@ -37,7 +39,9 @@
         "giant_crunch_berries": ["7", "658", "232", "796"],
         "giant_capn_crunch": ["235", "655", "454", "796"],
         "pops": ["459", "660", "549", "796"]
-        }
+        },
+        "height": 800,
+        "width": 560
     },
     {
         "planogram": "test",
@@ -48,6 +52,8 @@
             "185",
             "122"
           ]
-        }
+        },        
+        "height": 800,
+        "width": 560
       }
 ]

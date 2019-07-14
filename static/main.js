@@ -8,6 +8,12 @@ coords = []
 //     openFile(event)
 // }
 
+
+// drawCoordinates(46,12)
+// drawCoordinates(546,20)
+// drawCoordinates(501,731)
+// drawCoordinates(80,718)
+
 function addCoord (coord)  {
     
     coords.push(coord)
@@ -35,7 +41,7 @@ const submit = () => {
     const upload = {
         'bbox': [minY,maxY,minX,maxX],
         'coords': coords,
-        'image': './static/images/' + filename,
+        'image': img_bucket + filename,
         'pog': pog
     }
 
@@ -60,17 +66,35 @@ var publishImages = (data) => {
 
     const results = document.getElementById('img__slices')
 
+    const missing_items = data.reduce((m,v)=>{
+        if (v.is_light === 0){
+            m.push(v)
+        }
+        return m
+    },[])
+
+    const missingEl = document.getElementById('missing-items')
+    let html = '<div class="outs">OUTS</div>'
+    
+    missing_items.forEach(m => {
+        var url = m.path
+        var filename = url.substring(url.lastIndexOf('/')+1);
+        html = html + '<div class="outs__item">' + filename + '</div>'
+    })
+    
+    missingEl.innerHTML = html
+
     data.forEach(d => {
 
         var div = document.createElement('div')
         var DOM_img = document.createElement("img");
-        DOM_img.src = d
+        DOM_img.src = d.path
 
         var url = DOM_img.src
         var filename = url.substring(url.lastIndexOf('/')+1);
         DOM_img.title = filename;
 
-        div.innerHTML = '<div>' + filename + '</div>';
+        div.innerHTML = '<div>' + filename + ' ' + d.is_light + '</div>';
         div.appendChild(DOM_img);
         results.appendChild(div);
 

@@ -1,32 +1,35 @@
 {% extends 'base.html' %}
 {% block body %}
+<div class="main">
 <div class="container">
-    <div class="main">
-
+    <div>Import in photo then use the mouse to identify corners.</div>
         <form method="POST" enctype=multipart/form-data>
             <div class="form-group">
                 <input class="btn btn-default btn-choose" type=file name=file>
-                <input id="input__image-correct" type=submit value=Upload onclick="openForm(event)">
+                <input id="input__image-correct" type=submit value=Upload>
             </div>
         </form>
         <canvas id="myCanvas" style="border:2px solid black" ></canvas>
         <div id="coords"></div>
+        <div class="row w-100 p-3">
+                <button class="btn btn-info" onclick="clearLastPoint()">CLEAR LAST POINT</button>
+            </div>
+        <div class="row w-100 p-3">
         <div class="row w-100 p-3">
             <div class="pog_selector">select pog
                 <select id="select__pog">  
                 </select>
             </div>
         </div>
-
-        <div class="row w-100 p-3">
-            <button class="btn btn-info" onclick="clearLastPoint()">CLEAR</button>
-            <button class="btn btn-light" onclick="submit()">SUBMIT</button>
+            <button class="btn btn-dark" onclick="submit()">SUBMIT</button>
         </div>
         <img src="" id="img__results">
+        <div id="missing-items"></div>
         <div id="img__slices"></div>
         <script>
             var img = new Image()
             let img_url = '{{image_url}}'
+            var img_bucket = '{{image_bucket}}'
             img.src = '{{image_url}}';
         </script>
         <script src="{{url_for('static',filename='main.js')}}"></script>
