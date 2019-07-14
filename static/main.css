@@ -1,4 +1,5 @@
-img {
-    width: 200px;
-    height: auto;
+.main {
+    
+    padding-top: 50px; /* Whatever the height of your navbar is; the
+                             default is 50px */
 }

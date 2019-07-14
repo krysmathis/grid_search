@@ -145,7 +145,7 @@ def upload_file():
     return render_template('index.html',image_url='./static/images/shelf2.jpg')
 
 
-
+@app.route('/home',methods=['GET','POST'])
 @app.route('/',methods=['GET','POST'])
 def image_management():
     if request.method == 'POST':

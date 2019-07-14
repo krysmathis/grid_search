@@ -1,38 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='main.css')}}" />
-</head>
-<body>
-    <!-- <form>
-        <input type="file" name='UPLOAD' accept="image/*" onchange="openFile(event)">
-    </form> -->
-    <form method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=submit value=Upload onclick="openForm(event)">
-    </form>
-    <canvas id="myCanvas" style="border:2px solid black" ></canvas>
-    <div id="coords"></div>
-    <div class="pog_selector">select pog
-        <select id="select__pog">
-            
-        </select>
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <div class="main">
+
+        <form method="POST" enctype=multipart/form-data>
+            <div class="form-group">
+                <input class="btn btn-default btn-choose" type=file name=file>
+                <input id="input__image-correct" type=submit value=Upload onclick="openForm(event)">
+            </div>
+        </form>
+        <canvas id="myCanvas" style="border:2px solid black" ></canvas>
+        <div id="coords"></div>
+        <div class="row w-100 p-3">
+            <div class="pog_selector">select pog
+                <select id="select__pog">  
+                </select>
+            </div>
+        </div>
+
+        <div class="row w-100 p-3">
+            <button class="btn btn-info" onclick="clearLastPoint()">CLEAR</button>
+            <button class="btn btn-light" onclick="submit()">SUBMIT</button>
+        </div>
+        <img src="" id="img__results">
+        <div id="img__slices"></div>
+        <script>
+            var img = new Image()
+            let img_url = '{{image_url}}'
+            img.src = '{{image_url}}';
+        </script>
+        <script src="{{url_for('static',filename='main.js')}}"></script>
     </div>
-    <div>
-        <button onclick="clearLastPoint()">CLEAR</button>
-        <button onclick="submit()">SUBMIT</button>
-    </div>
-    <img src="" id="img__results">
-    <div id="img__slices"></div>
-    <script>
-        var img = new Image()
-        let img_url = '{{image_url}}'
-        img.src = '{{image_url}}';
-    </script>
-    <script src="{{url_for('static',filename='main.js')}}"></script>
-</body>
-</html>
+</div>
+{% endblock %}

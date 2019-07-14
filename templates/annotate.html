@@ -1,151 +1,34 @@
-<!DOCTYPE html>
-<html>
-    <!--inspiration from: http://nicodjimenez.github.io/boxLabel/annotate.html-->
-<head>
-    <link rel="stylesheet" href="http://annotorious.github.com/latest/annotorious.css" />
-    <script src=" http://annotorious.github.com/latest/annotorious.min.js"></script>
-    <script>
+{% extends 'base.html'%}
+{% block body %}
 
-    var imageFile = "";    
-
-    var openFile = function(event) {
-        var input = event.target;
-        var reader = new FileReader();
-        reader.onload = function(){
-            var dataURL = reader.result;
-            var output = document.getElementById('mainImage');
-            output.src = dataURL;
-            setTimeout(function(){
-                anno.reset();
-            }, 100);
-        };
-        imageFile = input.files[0];
-        reader.readAsDataURL(input.files[0]);
-    };
-
-    // prints 
-    function showBoxes(){
-        var myNode = document.getElementById("myList");
-        while (myNode.firstChild) {
-            myNode.removeChild(myNode.firstChild);
-        }
-            
-        var annoList = anno.getAnnotations();
-        //if (annoList.length == 0) return;
-        // copy object (for safety)
-        annoList = JSON.parse(JSON.stringify(annoList));
-
-        var width = document.getElementById("mainImage").width; 
-        var height = document.getElementById("mainImage").height; 
-        // make all annotations have pixel coordinates
-        for (var ind = 0; ind < annoList.length; ind++){
-            var curAnno = annoList[ind];
-            var curGeom = curAnno.shapes[0].geometry;
-            // means not using pixel coordinates
-            if (curGeom.height < 1 || curGeom.width < 1){
-                curGeom.height = Math.round(curGeom.height * height);
-                curGeom.width = Math.round(curGeom.width * width);
-                curGeom.x = Math.round(curGeom.x * width);
-                curGeom.y = Math.round(curGeom.y * height);
-            }
-            var xminStr = String(curGeom.x);
-            var xmaxStr = String(curGeom.x + curGeom.width);
-            var yminStr = String(curGeom.y);
-            var ymaxStr = String(curGeom.y + curGeom.height);
-            var textStr = curAnno.text;
-            //console.log(curAnno);
-            //console.log(curGeom);
-            curAnno.shapes[0].units = "pixels";
-            var node = document.createElement("CODE");
-            var brNode = document.createElement("BR");
-            var textnode = document.createTextNode(textStr + " " + xminStr + " " + yminStr + " " + xmaxStr + " " + ymaxStr);
-            node.appendChild(textnode);
-            document.getElementById("myList").appendChild(node);
-            document.getElementById("myList").appendChild(brNode);
-        }
-
-    }
-    
-
-    var generateAnnotatedImage = function() {
-        var annoList = anno.getAnnotations();
-        //if (annoList.length == 0) return;
-        // copy object (for safety)
-        annoList = JSON.parse(JSON.stringify(annoList));
-        var width = document.getElementById("mainImage").width; 
-        var height = document.getElementById("mainImage").height; 
-        // make all annotations have pixel coordinates
-        var image = {};
-        // image.width = width;
-        // image.height = height;
-        // image.annotations = [];
-
-        for (var ind = 0; ind < annoList.length; ind++){
-            var curAnno = annoList[ind];
-            var curGeom = curAnno.shapes[0].geometry;
-            // means not using pixel coordinates
-            if (curGeom.height < 1 || curGeom.width < 1){
-                curGeom.height = Math.round(curGeom.height * height);
-                curGeom.width = Math.round(curGeom.width * width);
-                curGeom.x = Math.round(curGeom.x * width);
-                curGeom.y = Math.round(curGeom.y * height);
-            }
-            var xminStr = String(curGeom.x);
-            var xmaxStr = String(curGeom.x + curGeom.width);
-            var yminStr = String(curGeom.y);
-            var ymaxStr = String(curGeom.y + curGeom.height);
-            var textStr = curAnno.text;
-            dict = {}
-            image[textStr] = [xminStr, yminStr,xmaxStr,ymaxStr];
-        }
-        return image;
-    }
-
-
-    // prints 
-    function showBoxes(){
-        var width = document.getElementById("mainImage").width; 
-        var height = document.getElementById("mainImage").height; 
-
-        var myNode = document.getElementById("myList");
-        while (myNode.firstChild) {
-            myNode.removeChild(myNode.firstChild);
-        }
-       
-            var images= generateAnnotatedImage();   
-            const results = {}
-            results['planogram'] = "test"
-            results['items'] = images
-            results['width'] = width
-            results['height'] = height
-            var node = document.createElement("PRE");
-            var textNode = document.createTextNode(JSON.stringify(results, null, '  '));
-            node.appendChild(textNode);
-            document.getElementById("myList").appendChild(node);
-        
-    }
-    </script>  
-    <style>
-        article, aside, figure, footer, header, hgroup, 
-        menu, nav, section { display: block; }
-    </style>
-</head>
-<body>
-<br>
-    <input type='file' accept='image/*' onchange='openFile(event)' />
+<div class="container">
+<div class="main">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile01"
+            aria-describedby="inputGroupFileAddon01" accept='image/*' onchange='openFile(event)' >
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+    </div>
+    <!-- <input type='file' accept='image/*' onchange='openFile(event)' /> -->
     <div>
-        <button type="button" onclick="showBoxes()">Show</button>
+        <button class="btn btn-primary" type="button" onclick="showBoxes()">Show</button>
     </div>
     <div >
         <img class="annotatable" id="mainImage" src="#" alt="your image" />
     </div>
     <br>
-        
-        <div>Select image, click and drag to select boxes, then click on 'Show Boxes' button. JSON representing this image and
+    
+    <div>Select image, click and drag to select boxes, then click on 'Show Boxes' button. JSON representing this image and
         its annotations will be produced when you press Show.</div>
         <ul id="myList">
         </ul>
-    </br>
 
-</body>
-</html>
+    <script src=" http://annotorious.github.com/latest/annotorious.min.js"></script>
+    <script src='{{url_for("static", filename="annotate.js")}}'></script>
+</div>
+</div>
+{% endblock %}
