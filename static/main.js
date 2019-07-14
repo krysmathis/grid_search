@@ -22,6 +22,11 @@ function addCoord (coord)  {
 
 const submit = () => {
 
+    if (coords.length<4)  {
+        alert('no corners identified')
+        return
+
+    }
     const xs = coords.map(c => c['x'])
     const minX = Math.min(...xs)
     const maxX = Math.max(...xs)
@@ -65,7 +70,8 @@ const submit = () => {
 var publishImages = (data) => {
 
     const results = document.getElementById('img__slices')
-
+    results.innerHTML = ''
+    
     const missing_items = data.reduce((m,v)=>{
         if (v.is_light === 0){
             m.push(v)

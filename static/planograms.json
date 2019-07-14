@@ -153,5 +153,298 @@
         },
         "width": 374,
         "height": 586
+      },
+      {
+        "planogram": "cereal16B",
+        "items": {
+          "kellogs_pt_cereal_strawberry": [
+            "3",
+            "6",
+            "119",
+            "92"
+          ],
+          "apple_jacks": [
+            "127",
+            "122",
+            "248",
+            "211"
+          ],
+          "choc_frosted_flakes_marshmallows": [
+            "247",
+            "5",
+            "370",
+            "93"
+          ],
+          "crispy_rice": [
+            "1",
+            "129",
+            "123",
+            "210"
+          ],
+          "cv_frosted_flakes": [
+            "251",
+            "125",
+            "371",
+            "209"
+          ],
+          "rice_krispies": [
+            "1",
+            "226",
+            "118",
+            "333"
+          ],
+          "trix": [
+            "120",
+            "246",
+            "181",
+            "335"
+          ],
+          "honey_nut_frosted_flakes": [
+            "181",
+            "247",
+            "243",
+            "335"
+          ],
+          "frosted_flakes": [
+            "246",
+            "244",
+            "360",
+            "336"
+          ],
+          "peanut_butter_capn_crunch": [
+            "2",
+            "368",
+            "60",
+            "457"
+          ],
+          "capn_crunch": [
+            "62",
+            "371",
+            "116",
+            "457"
+          ],
+          "crunch_berries": [
+            "119",
+            "370",
+            "237",
+            "458"
+          ],
+          "frosted_flakes_family": [
+            "238",
+            "349",
+            "359",
+            "457"
+          ],
+          "crunch_berries_family_size": [
+            "3",
+            "475",
+            "151",
+            "576"
+          ],
+          "apple_jacks_family_size": [
+            "154",
+            "476",
+            "277",
+            "579"
+          ],
+          "pops": [
+            "278",
+            "477",
+            "369",
+            "577"
+          ]
+        },
+        "width": 372,
+        "height": 581
+      },
+      {
+        "planogram": "cereal16C",
+        "items": {
+          "froot_loopsa_marshmallows": [
+            "3",
+            "247",
+            "107",
+            "332"
+          ],
+          "lucky_charms_frosted_flakes": [
+            "128",
+            "6",
+            "249",
+            "90"
+          ],
+          "oreos_cereal": [
+            "251",
+            "5",
+            "369",
+            "91"
+          ],
+          "fruity_hoops": [
+            "2",
+            "123",
+            "123",
+            "205"
+          ],
+          "lucky_charms": [
+            "123",
+            "120",
+            "247",
+            "209"
+          ],
+          "honey_nut_roasted_oats": [
+            "248",
+            "119",
+            "371",
+            "207"
+          ],
+          "lucky_charms_family_size": [
+            "104",
+            "230",
+            "248",
+            "331"
+          ],
+          "honey_nut_cheerios": [
+            "250",
+            "230",
+            "372",
+            "330"
+          ],
+          "froot_loops_family": [
+            "1",
+            "348",
+            "110",
+            "454"
+          ],
+          "reeses_puffs_family": [
+            "30",
+            "482",
+            "174",
+            "579"
+          ],
+          "cheerios_choc_pb": [
+            "234",
+            "371",
+            "353",
+            "453"
+          ],
+          "honey_nut_cheerios_family": [
+            "176",
+            "480",
+            "324",
+            "579"
+          ]
+        },
+        "width": 372,
+        "height": 580
+      },
+      {
+        "planogram": "cereal16D",
+        "items": {
+          "life": [
+            "3",
+            "10",
+            "58",
+            "89"
+          ],
+          "cv_corn_flakes": [
+            "60",
+            "9",
+            "119",
+            "88"
+          ],
+          "kellogs_fruit_yogurt": [
+            "123",
+            "3",
+            "181",
+            "90"
+          ],
+          "kelloggs_red_berries": [
+            "183",
+            "2",
+            "244",
+            "89"
+          ],
+          "kellogs_raisin_bran": [
+            "246",
+            "3",
+            "363",
+            "89"
+          ],
+          "cv_cinnamon_toast_squares": [
+            "0",
+            "120",
+            "121",
+            "206"
+          ],
+          "cv_frosted_shredded_wheat": [
+            "123",
+            "120",
+            "245",
+            "207"
+          ],
+          "cv_raisin_bran": [
+            "248",
+            "121",
+            "363",
+            "206"
+          ],
+          "cinnamon_toast_crunch": [
+            "1",
+            "230",
+            "122",
+            "329"
+          ],
+          "kelloggs_mini_wheats": [
+            "124",
+            "249",
+            "242",
+            "330"
+          ],
+          "kelloggs_raisin_bran_crunch": [
+            "245",
+            "231",
+            "365",
+            "334"
+          ],
+          "cinn_toast_crunch_family": [
+            "0",
+            "353",
+            "126",
+            "451"
+          ],
+          "kelloggs_mini_wheats_family": [
+            "128",
+            "352",
+            "246",
+            "452"
+          ],
+          "kelloggs_raisin_bran": [
+            "248",
+            "353",
+            "366",
+            "453"
+          ],
+          "honey_nut_cheerios": [
+            "0",
+            "479",
+            "97",
+            "577"
+          ],
+          "cv_honey_crunch_oats": [
+            "98",
+            "479",
+            "244",
+            "574"
+          ],
+          "honey_bunches_of_oats": [
+            "246",
+            "477",
+            "365",
+            "574"
+          ]
+        },
+        "width": 366,
+        "height": 584
       }
+      
+      
 ]
