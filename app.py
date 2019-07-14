@@ -231,8 +231,9 @@ def image_management():
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 return render_template('index.html',image_url='./static/images/'+filename, image_bucket='./static/images/')
             
-            upload_results = upload_file_to_s3(file, S3_BUCKET)
-            image_url = str(upload_results)
+            # uncomment the next two lines when usings s3
+            # upload_results = upload_file_to_s3(file, S3_BUCKET)
+            # image_url = str(upload_results)
             
             # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # return redirect(url_for('uploaded_file',
