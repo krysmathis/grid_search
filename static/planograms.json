@@ -20,6 +20,7 @@
         },
         "height": 800,
         "width": 560
+        
     },
     {   "planogram": "cereal2",
         "items": {
@@ -55,5 +56,102 @@
         },        
         "height": 800,
         "width": 560
+      },
+      {
+        "planogram": "cereal16A",
+        "items": {
+          "cocoa_krispies": [
+            "3",
+            "7",
+            "124",
+            "91"
+          ],
+          "honey_smacks": [
+            "129",
+            "2",
+            "250",
+            "91"
+          ],
+          "honey_combs": [
+            "253",
+            "0",
+            "372",
+            "94"
+          ],
+          "cocoa_crispy_rice": [
+            "3",
+            "119",
+            "134",
+            "208"
+          ],
+          "fruity_pebbles": [
+            "127",
+            "227",
+            "252",
+            "332"
+          ],
+          "fruity_bites": [
+            "253",
+            "121",
+            "372",
+            "207"
+          ],
+          "cookie_crisp": [
+            "2",
+            "232",
+            "64",
+            "331"
+          ],
+          "cocoa_puffs": [
+            "66",
+            "230",
+            "125",
+            "332"
+          ],
+          "marshmallow_fruity_pebbles": [
+            "253",
+            "243",
+            "371",
+            "331"
+          ],
+          "malt-o-meal_cocoa_dyno_bites": [
+            "4",
+            "345",
+            "117",
+            "453"
+          ],
+          "malt-o-meal_smores": [
+            "132",
+            "353",
+            "236",
+            "457"
+          ],
+          "malt-o-meal_golden_puffs": [
+            "251",
+            "350",
+            "372",
+            "456"
+          ],
+          "malt-o-meal_cnmn_toasters": [
+            "5",
+            "477",
+            "117",
+            "580"
+          ],
+          "malt-o-meal_tootie_fruitie": [
+            "118",
+            "476",
+            "242",
+            "577"
+          ],
+          "malt-o-meal_berry_col_crunch": [
+            "242",
+            "468",
+            "369",
+            "578"
+          ]
+        },
+        "width": 374,
+        "height": 586
       }
 ]
