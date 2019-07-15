@@ -2,10 +2,10 @@ var myCanvas = document.getElementById('myCanvas');
 
 coords = []
 
-// const uploadForm = document.querySelector('.form__upload')
+const uploadForm = document.querySelector('.form__upload')
 // uploadForm.onsubmit = (event) => {
-//     event.preventDefault();
-//     openFile(event)
+    // event.preventDefault();
+    // openFile(event)
 // }
 
 

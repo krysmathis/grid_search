@@ -301,6 +301,11 @@ def upload():
             light_threshold = 10
             is_light = 1 if np.mean(gray) > light_threshold else 0
             
+            # delete if exists
+            file_path = './static/images/slices/' + k + '.jpg'
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
             cv2.imwrite('./static/images/slices/' + k + '.jpg',sliced_image)
             files.append({'path': './static/images/slices/' + k + '.jpg','is_light': is_light})
         
