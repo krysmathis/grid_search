@@ -4,4 +4,4 @@ __pycache__
 .DS_Store
 ./static/DS_Store
 .txt
-static/images
+#static/images
