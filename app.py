@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import os
 # import boto3, botocore
 import urllib
+from datetime import datetime
+
 # from io import BytesIO
 # import imageio
 
@@ -290,7 +292,7 @@ def upload():
         
         files = []
 
-
+        ts = datetime.now().timestamp()
         # cut up the image
         for k,v in pog_items.items():
             
@@ -301,13 +303,14 @@ def upload():
             light_threshold = 10
             is_light = 1 if np.mean(gray) > light_threshold else 0
             
+            
             # delete if exists
-            file_path = './static/images/slices/' + k + '.jpg'
+            file_path = './static/images/slices/' + str(ts) + '__' + k + '.jpg'
             if os.path.exists(file_path):
                 os.remove(file_path)
 
-            cv2.imwrite('./static/images/slices/' + k + '.jpg',sliced_image)
-            files.append({'path': './static/images/slices/' + k + '.jpg','is_light': is_light})
+            cv2.imwrite(file_path,sliced_image)
+            files.append({'path': file_path ,'is_light': is_light})
         
         return Response(json.dumps(files), status=200, mimetype='application/json')
 
