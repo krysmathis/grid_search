@@ -301,8 +301,8 @@ def upload():
             light_threshold = 10
             is_light = 1 if np.mean(gray) > light_threshold else 0
             
-            cv2.imwrite('./static/images/' + k + '.jpg',sliced_image)
-            files.append({'path': './static/images/' + k + '.jpg','is_light': is_light})
+            cv2.imwrite('./static/images/slices/' + k + '.jpg',sliced_image)
+            files.append({'path': './static/images/slices/' + k + '.jpg','is_light': is_light})
         
         return Response(json.dumps(files), status=200, mimetype='application/json')
 
