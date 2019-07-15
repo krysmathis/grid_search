@@ -5,5 +5,3 @@ __pycache__
 ./static/DS_Store
 .txt
 static/images
-annotorious.css
-annotorious.min.js
