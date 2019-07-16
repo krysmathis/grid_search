@@ -3,27 +3,31 @@
 
 <div class="container">
 <div class="main">
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-        </div>
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile01"
-            aria-describedby="inputGroupFileAddon01" accept='image/*' onchange='openFile(event)' >
-            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-        </div>
-    </div>
-    <!-- <input type='file' accept='image/*' onchange='openFile(event)' /> -->
-    <div>
-        <button class="btn btn-primary" type="button" onclick="showBoxes()">Show</button>
-    </div>
-    <div >
-        <img class="annotatable" id="mainImage" src="#" alt="your image" />
-    </div>
-    <br>
-    
+
     <div>Select image, click and drag to select boxes, then click on 'Show Boxes' button. JSON representing this image and
         its annotations will be produced when you press Show.</div>
+        <div class="row heading">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01"
+                    aria-describedby="inputGroupFileAddon01" accept='image/*' onchange='openFile(event)' >
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+            </div>
+        </div>
+    <!-- <input type='file' accept='image/*' onchange='openFile(event)' /> -->
+
+        <img class="annotatable overflow-scroll-x" id="mainImage" src="#" alt="" />
+
+
+    <br>
+    <div>
+        <button class="btn btn-primary btn-block" type="button" onclick="showBoxes()">Show</button>
+    </div>
+    
         <ul id="myList">
         </ul>
 

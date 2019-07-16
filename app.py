@@ -323,7 +323,7 @@ def upload():
             gray = cv2.cvtColor(sliced_image, cv2.COLOR_BGR2GRAY)
             light_threshold = 10
             # is_light = 1 if np.mean(gray) > light_threshold else 0
-            is_light = np.mean(gray)
+            is_light = round(np.mean(gray),2)
             
             # delete if exists
             file_path = './static/images/slices/' + str(ts) + '__' + k + '.jpg'

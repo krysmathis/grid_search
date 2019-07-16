@@ -14,12 +14,6 @@
     text-transform: uppercase;
 }
 
-canvas {
-    background-color: blue;
-    /* width: 100%;
-    height: auto; */
-
-}
 
 .canvas__container {
     overflow: scroll;
@@ -31,6 +25,6 @@ canvas {
 }
 
 #img__results {
-    width: 80%;
+    width: 60%;
     height: auto;
 }
