@@ -1,9 +1,36 @@
 .main {
-    
-    padding-top: 20px; /* Whatever the height of your navbar is; the
+
+    padding-top: 20px;
+    /* Whatever the height of your navbar is; the
                              default is 50px */
 }
 
 .outs__item {
     color: red;
+    font-size: 1.5em;
+    font-weight: 400;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-transform: uppercase;
+}
+
+canvas {
+    background-color: blue;
+    /* width: 100%;
+    height: auto; */
+
+}
+
+.canvas__container {
+    overflow: scroll;
+}
+
+.result-area {
+    width: 75vh;
+    height: auto;
+}
+
+#img__results {
+    width: 80%;
+    height: auto;
 }

@@ -230,8 +230,15 @@ def image_management():
             amazon_file = file
 
             if DEV_LOCAL == True: # using local files saving on s3 load
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return render_template('index.html',image_url='./static/images/'+filename, image_bucket='./static/images/')
+                
+                file_name = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                resized_file_name = os.path.join(app.config['UPLOAD_FOLDER'], 'resized_' + filename)
+                file.save(file_name)
+                img = cv2.imread(file_name)
+                resized_image = image_resize(img,width=600)
+                
+                cv2.imwrite(resized_file_name,resized_image)
+                return render_template('index.html',image_url=resized_file_name, image_bucket='./static/images/')
             
             # uncomment the next two lines when usings s3
             # upload_results = upload_file_to_s3(file, S3_BUCKET)
@@ -285,8 +292,8 @@ def upload():
         pog_height = pog['height']
         img_corrected = four_point_transform(img, pts)
         img_corrected = image_resize(img_corrected,height=pog_height)
+
         
-        cv2.imwrite('./static/images/tide_whatever.jpg',img_corrected)
         
         pog_items = pog['items']
         
@@ -315,8 +322,8 @@ def upload():
             # calc to check if it is within darkness threshold
             gray = cv2.cvtColor(sliced_image, cv2.COLOR_BGR2GRAY)
             light_threshold = 10
-            is_light = 1 if np.mean(gray) > light_threshold else 0
-            
+            # is_light = 1 if np.mean(gray) > light_threshold else 0
+            is_light = np.mean(gray)
             
             # delete if exists
             file_path = './static/images/slices/' + str(ts) + '__' + k + '.jpg'
@@ -325,6 +332,9 @@ def upload():
 
             cv2.imwrite(file_path,sliced_image)
             files.append({'path': file_path ,'is_light': is_light})
+        
+        img_resized = image_resize(img_corrected,width=400)
+        cv2.imwrite('./static/images/tide_whatever.jpg',img_resized)
         
         return Response(json.dumps(files), status=200, mimetype='application/json')
 

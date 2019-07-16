@@ -12,10 +12,12 @@
 </head>
 <body>
     {% include 'navbar.html' %}
-    {% block  warp %}
-    {% endblock %}
-    {% block body %}
-    {% endblock %}
+    <div class="container-fluid">
+        {% block  warp %}
+        {% endblock %}
+        {% block body %}
+        {% endblock %}
+    </div>
      <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2019 Krys Mathis:
         <a href="https://github.com/krysmathis/grid_search"> Github</a>

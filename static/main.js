@@ -79,7 +79,7 @@ var publishImages = (data) => {
     results.innerHTML = ''
     
     const missing_items = data.reduce((m,v)=>{
-        if (v.is_light === 0){
+        if (v.is_light < 25){
             m.push(v)
         }
         return m
@@ -88,15 +88,22 @@ var publishImages = (data) => {
     const missingEl = document.getElementById('missing-items')
     let html = '<div class="outs">OUTS</div>'
     
+    
+
+    console.log(missing_items)
     missing_items.forEach(m => {
         var url = m.path
         var filename = url.substring(url.lastIndexOf('/')+1);
+        filename = filename.substring(filename.lastIndexOf('__')+2);
+        
         html = html + '<div class="outs__item">' + filename + '</div>'
     })
     
     missingEl.innerHTML = html
 
-    data.forEach(d => {
+    data.sort(function(a, b) {
+        return parseFloat(a.is_light) - parseFloat(b.is_light);
+    }).forEach(d => {
 
         var div = document.createElement('div')
         var DOM_img = document.createElement("img");
@@ -104,6 +111,7 @@ var publishImages = (data) => {
 
         var url = DOM_img.src
         var filename = url.substring(url.lastIndexOf('/')+1);
+        filename = filename.substring(filename.lastIndexOf('__')+2);
         DOM_img.title = filename;
 
         div.innerHTML = '<div>' + filename + ' ' + d.is_light + '</div>';
